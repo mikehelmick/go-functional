@@ -1,0 +1,5 @@
+{
+  "contributors": ["mikehelmick"],
+  "message": "We require contributors to sign a contributor license agreement.",
+  "label": "cla-signed"
+}
