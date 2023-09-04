@@ -23,7 +23,7 @@ import (
 )
 
 func TestFrequencies(t *testing.T) {
-
+	t.Parallel()
 	keyFn := func(x string) string {
 		return strings.ToLower(x)
 	}

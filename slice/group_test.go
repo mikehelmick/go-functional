@@ -23,6 +23,7 @@ import (
 )
 
 func TestGroupBy(t *testing.T) {
+	t.Parallel()
 	length := func(s string) int {
 		return len(s)
 	}
@@ -31,9 +32,9 @@ func TestGroupBy(t *testing.T) {
 	got := slice.GroupBy(in, length)
 
 	want := map[int][]string{
-		3: []string{"cat", "dog"},
-		4: []string{"bird"},
-		5: []string{"snake"},
+		3: {"cat", "dog"},
+		4: {"bird"},
+		5: {"snake"},
 	}
 
 	if diff := cmp.Diff(want, got); diff != "" {
