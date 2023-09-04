@@ -15,6 +15,8 @@
 package slice_test
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -96,4 +98,50 @@ func TestTake(t *testing.T) {
 			}
 		})
 	}
+}
+
+func ExampleTakeEvery() {
+	in := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+	takeTwo := slice.TakeEvery(in, 2)
+	fmt.Printf("Take 2: %+v\n", takeTwo)
+
+	takeZero := slice.TakeEvery(in, 0)
+	fmt.Printf("Take 0: %+v\n", takeZero)
+
+	takeAll := slice.TakeEvery(in, 27)
+	fmt.Printf("Take all: %+v\n", takeAll)
+
+	// Output:
+	// Take 2: [1 3 5 7 9]
+	// Take 0: []
+	// Take all: [1]
+}
+
+func ExampleTakeWhile() {
+	in := []string{"dip", "drive", "dodge", "swerve"}
+
+	dPrefix := slice.TakeWhile(in, func(s string) bool {
+		return strings.HasPrefix(s, "d")
+	})
+	fmt.Printf("dPrefix: %+v\n", dPrefix)
+
+	diPrefix := slice.TakeWhile(in, func(s string) bool {
+		return strings.HasPrefix(s, "di")
+	})
+	fmt.Printf("diPrefix: %+v\n", diPrefix)
+
+	sPrefix := slice.TakeWhile(in, func(s string) bool {
+		return strings.HasPrefix(s, "s")
+	})
+	fmt.Printf("sPrefix: %+v\n", sPrefix)
+
+	all := slice.TakeWhile(in, func(s string) bool { return true })
+	fmt.Printf("all: %+v\n", all)
+
+	// Output:
+	// dPrefix: [dip drive dodge]
+	// diPrefix: [dip]
+	// sPrefix: []
+	// all: [dip drive dodge swerve]
 }
