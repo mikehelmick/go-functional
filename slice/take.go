@@ -33,3 +33,27 @@ func Take[T any](in []T, amount int) []T {
 	}
 	return in[len(in)+amount:]
 }
+
+// TakeEvery returns a new slice with every nth element
+// from the original slice. The first element is always included
+// unless n is 0.
+func TakeEvery[T any](in []T, n uint) []T {
+	if n == 0 {
+		return make([]T, 0)
+	}
+	rtn := make([]T, 0, len(in)/int(n))
+	nInt := int(n)
+	for i := 0; i < len(in); i = i + nInt {
+		rtn = append(rtn, in[i])
+	}
+	return rtn
+}
+
+// TakeWhile returns elements from the beginning of the
+// input slice as long as the provided MatchFn returns true.
+func TakeWhile[T any](in []T, fn MatchFn[T]) []T {
+	idx := 0
+	for ; idx < len(in) && fn(in[idx]); idx++ {
+	}
+	return in[0:idx]
+}
