@@ -53,7 +53,9 @@ func TakeEvery[T any](in []T, n uint) []T {
 // input slice as long as the provided MatchFn returns true.
 func TakeWhile[T any](in []T, fn MatchFn[T]) []T {
 	idx := 0
+	//revive:disable:empty-block
 	for ; idx < len(in) && fn(in[idx]); idx++ {
 	}
+	//revive:enable:empty-block
 	return in[0:idx]
 }

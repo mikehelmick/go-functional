@@ -119,7 +119,6 @@ func ExampleTakeEvery() {
 }
 
 func ExampleTakeWhile() {
-
 	in := []string{"dip", "drive", "dodge", "swerve"}
 
 	dPrefix := slice.TakeWhile(in, func(s string) bool {
