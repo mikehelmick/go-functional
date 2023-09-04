@@ -23,6 +23,37 @@ import (
 	"github.com/mikehelmick/go-functional/slice"
 )
 
+type Person struct {
+	Name string
+	Age  int
+}
+
+func (p Person) String() string {
+	return fmt.Sprintf("%s: %v", p.Name, p.Age)
+}
+
+func ExampleMap() {
+	redactAge := func(p Person) Person {
+		return Person{
+			Name: p.Name,
+		}
+	}
+
+	people := []Person{
+		{Name: "Jim", Age: 28},
+		{Name: "Dwight", Age: 32},
+	}
+
+	redacted := slice.Map(people, redactAge)
+
+	fmt.Printf("%+v\n", people)
+	fmt.Printf("%+v\n", redacted)
+
+	// Output:
+	// [Jim: 28 Dwight: 32]
+	// [Jim: 0 Dwight: 0]
+}
+
 func TestMap(t *testing.T) {
 	t.Parallel()
 
