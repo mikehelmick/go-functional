@@ -1,0 +1,67 @@
+
+run:
+  # default: '1m'
+  timeout: '5m'
+
+  # default: []
+  build-tags:
+  - 'all'
+
+  # default: ''
+  modules-download-mode: 'readonly'
+
+  # default: false
+  allow-parallel-runners: true
+
+# Depguard may be enabled later.
+# - 'depguard'
+linters:
+  enable:
+  - 'asciicheck'
+  - 'bodyclose'
+  - 'dogsled'
+  - 'errcheck'
+  - 'errorlint'
+  - 'exhaustive'
+  - 'exportloopref'
+  - 'gofmt'
+  - 'goheader'
+  - 'goimports'
+  - 'gomodguard'
+  - 'goprintffuncname'
+  - 'gosec'
+  - 'gosimple'
+  - 'govet'
+  - 'ineffassign'
+  - 'makezero'
+  - 'misspell'
+  - 'nakedret'
+  - 'noctx'
+  - 'nolintlint'
+  - 'paralleltest'
+  - 'prealloc'
+  - 'predeclared'
+  - 'revive'
+  - 'sqlclosecheck'
+  - 'staticcheck'
+  - 'stylecheck'
+  - 'typecheck'
+  - 'unconvert'
+  - 'unused'
+  - 'whitespace'
+
+issues:
+  # default: []
+  exclude:
+  - '^S1023:' # staticcheck: redundant returns help with http handlers
+  - '^SA3000:' # staticcheck: not required in Go 11.4+
+
+  # default: 50
+  max-issues-per-linter: 0
+
+  # default: 3
+  max-same-issues: 0
+
+severity:
+  # default: ''
+  default-severity: error

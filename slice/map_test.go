@@ -24,6 +24,8 @@ import (
 )
 
 func TestMap(t *testing.T) {
+	t.Parallel()
+
 	fn := func(a int) string {
 		return fmt.Sprintf("%04d", a)
 	}
