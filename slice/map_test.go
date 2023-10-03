@@ -71,3 +71,23 @@ func TestMap(t *testing.T) {
 		t.Fatalf("mismatch (-want, +got):\n%s", diff)
 	}
 }
+
+func TestMapPtr(t *testing.T) {
+	t.Parallel()
+	in := []Person{
+		{
+			Name: "Alice",
+			Age:  30,
+		},
+		{
+			Name: "Bob",
+			Age:  31,
+		},
+	}
+
+	got := slice.MapToPtr(in)
+	want := []*Person{&in[0], &in[1]}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Fatalf("mismatch (-want, +got):\n%s", diff)
+	}
+}
