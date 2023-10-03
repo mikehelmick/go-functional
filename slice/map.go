@@ -29,3 +29,14 @@ func Map[T any, R any](in []T, fn MapFn[T, R]) []R {
 	}
 	return rtn
 }
+
+// MapToPtr transforms a slice into a slice of pointers
+// to the same elements.
+func MapToPtr[T any](in []T) []*T {
+	rtn := make([]*T, len(in))
+	for i, e := range in {
+		e := e
+		rtn[i] = &e
+	}
+	return rtn
+}
