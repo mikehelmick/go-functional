@@ -1,8 +1,8 @@
 module github.com/mikehelmick/go-functional
 
-go 1.20
+go 1.24
 
-require github.com/google/go-cmp v0.5.9
+require github.com/google/go-cmp v0.7.0
 
 require (
 	4d63.com/gocheckcompilerdirectives v1.2.1 // indirect
