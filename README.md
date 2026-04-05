@@ -3,3 +3,5 @@
 
 # go-functional
 Functional programming like interfaces for Go.
+
+Parts of this library were written with the assistance of [Claude Code](https://claude.ai/code).
