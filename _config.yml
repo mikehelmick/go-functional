@@ -1,0 +1,17 @@
+title: go-functional
+description: Functional programming primitives and OTP-inspired concurrency patterns for Go generics.
+theme: minima
+url: "https://mikehelmick.github.io"
+baseurl: "/go-functional"
+
+minima:
+  skin: classic
+
+exclude:
+  - Makefile
+  - go.mod
+  - go.sum
+  - coverage.out
+  - .golangci.yaml
+  - AUTHORS
+  - CODEOWNERS
