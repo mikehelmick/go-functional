@@ -2,6 +2,7 @@
 layout: default
 title: Functional Primitives
 nav_order: 2
+render_with_liquid: false
 ---
 
 # Functional Primitives

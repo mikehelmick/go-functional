@@ -2,6 +2,7 @@
 layout: default
 title: OTP Concurrency
 nav_order: 3
+render_with_liquid: false
 ---
 
 # OTP-Inspired Concurrency
