@@ -68,7 +68,6 @@ func TestFind(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			gotVal, gotFound := slice.Find(tc.in, isEven)
@@ -126,7 +125,6 @@ func TestFindIndex(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			gotIdx, gotFound := slice.FindIndex(tc.in, isEven)
