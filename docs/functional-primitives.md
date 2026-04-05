@@ -77,8 +77,15 @@ anyBig   := slice.Any(nums, func(n int) bool { return n > 4 })        // true
 // SortBy sorts ascending by the key function.
 sorted := slice.SortBy(nums, func(n int) int { return -n }) // [5,4,3,2,1]
 
-type Person struct{ Name string; Age int }
-people := []Person{{"Alice", 30}, {"Bob", 25}, {"Carol", 35}}
+type Person struct {
+    Name string
+    Age  int
+}
+people := []Person{
+    {Name: "Alice", Age: 30},
+    {Name: "Bob",   Age: 25},
+    {Name: "Carol", Age: 35},
+}
 youngest, _ := slice.MinBy(people, func(p Person) int { return p.Age }) // Bob
 oldest,   _ := slice.MaxBy(people, func(p Person) int { return p.Age }) // Carol
 ```
