@@ -2,6 +2,7 @@
 layout: default
 title: Example Application
 nav_order: 4
+render_with_liquid: false
 ---
 
 # Example Application
