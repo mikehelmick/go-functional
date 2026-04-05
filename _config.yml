@@ -1,11 +1,29 @@
 title: go-functional
 description: Functional programming primitives and OTP-inspired concurrency patterns for Go generics.
-theme: minima
+remote_theme: just-the-docs/just-the-docs@v0.10.0
 url: "https://mikehelmick.github.io"
 baseurl: "/go-functional"
 
-minima:
-  skin: classic
+color_scheme: dark
+
+search_enabled: true
+search:
+  heading_level: 3
+  previews: 2
+
+aux_links:
+  "GitHub":
+    - "//github.com/mikehelmick/go-functional"
+  "pkg.go.dev":
+    - "//pkg.go.dev/github.com/mikehelmick/go-functional"
+
+aux_links_new_tab: true
+
+footer_content: >
+  Parts of this library were written with the assistance of
+  <a href="https://claude.ai/code">Claude Code</a>.
+  &copy; 2026 the go-functional authors.
+  Apache 2.0 License.
 
 exclude:
   - Makefile
