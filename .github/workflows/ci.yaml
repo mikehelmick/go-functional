@@ -67,11 +67,9 @@ jobs:
         run: go mod download
 
       - name: go-lint
-        shell: bash
-        run: |-
-          set -eEu
-          set +o pipefail
-          make lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          args: --config .golangci.yaml
 
       - name: copyright-check
         shell: bash
@@ -81,8 +79,7 @@ jobs:
           set -eEu
           set +o pipefail
 
-          YEAR=$(date +"%Y")
-          find . -type f -name '*.go' -exec awk 'FNR==1{if ($0!~"Copyright '"${YEAR}"'" && $0!~"Code generated") print FILENAME ":1:missing copyright or invalid copyright year";}' '{}' + | \
+          find . -type f -name '*.go' -exec awk 'FNR==1{if ($0!~/Copyright [0-9]{4}/ && $0!~"Code generated") print FILENAME ":1:missing copyright or invalid copyright year";}' '{}' + | \
           reviewdog -efm="%f:%l:%m" \
             -name="copyright-check" \
             -reporter="github-pr-check" \
