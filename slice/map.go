@@ -35,7 +35,6 @@ func Map[T any, R any](in []T, fn MapFn[T, R]) []R {
 func MapToPtr[T any](in []T) []*T {
 	rtn := make([]*T, len(in))
 	for i, e := range in {
-		e := e
 		rtn[i] = &e
 	}
 	return rtn

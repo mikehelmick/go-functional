@@ -89,7 +89,6 @@ func TestTake(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			got := slice.Take(tc.in, tc.amt)
@@ -136,7 +135,7 @@ func ExampleTakeWhile() {
 	})
 	fmt.Printf("sPrefix: %+v\n", sPrefix)
 
-	all := slice.TakeWhile(in, func(s string) bool { return true })
+	all := slice.TakeWhile(in, func(_ string) bool { return true })
 	fmt.Printf("all: %+v\n", all)
 
 	// Output:

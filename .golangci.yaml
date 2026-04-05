@@ -23,7 +23,7 @@ linters:
   - 'errcheck'
   - 'errorlint'
   - 'exhaustive'
-  - 'exportloopref'
+  - 'copyloopvar'
   - 'gofmt'
   - 'goheader'
   - 'goimports'

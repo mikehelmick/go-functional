@@ -41,8 +41,8 @@ func TakeEvery[T any](in []T, n uint) []T {
 	if n == 0 {
 		return make([]T, 0)
 	}
-	rtn := make([]T, 0, len(in)/int(n))
-	nInt := int(n)
+	rtn := make([]T, 0, len(in)/int(n)) //nolint:gosec // n is a slice step; slice length is bounded by math.MaxInt
+	nInt := int(n)                      //nolint:gosec
 	for i := 0; i < len(in); i = i + nInt {
 		rtn = append(rtn, in[i])
 	}
