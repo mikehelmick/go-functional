@@ -67,11 +67,9 @@ jobs:
         run: go mod download
 
       - name: go-lint
-        shell: bash
-        run: |-
-          set -eEu
-          set +o pipefail
-          make lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          args: --config .golangci.yaml
 
       - name: copyright-check
         shell: bash

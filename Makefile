@@ -33,7 +33,7 @@ diff-check:
 # locally. There is a chance that CI detects linter errors that are not found
 # locally, but it should be rare.
 lint:
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 	@golangci-lint run --config .golangci.yaml
 .PHONY: lint
 
