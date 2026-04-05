@@ -1,12 +1,23 @@
 ---
 layout: default
-title: Example Application
+title: Example Applications
 nav_order: 4
 render_with_liquid: false
 ---
 
-# Example Application
+# Example Applications
 {: .no_toc }
+
+<details open markdown="block">
+  <summary>Contents</summary>
+  {: .text-delta }
+1. TOC
+{:toc}
+</details>
+
+---
+
+## Word Frequency Service
 
 [View source on GitHub](https://github.com/mikehelmick/go-functional/blob/main/examples/wordfreq/main.go){: .btn .btn-outline }
 
@@ -132,4 +143,118 @@ Top 5 words:
   and            3
 
 14 of 46 unique words appear more than once
+```
+
+---
+
+## Circuit Breaker
+
+[View source on GitHub](https://github.com/mikehelmick/go-functional/blob/main/examples/circuitbreaker/main.go){: .btn .btn-outline }
+
+`examples/circuitbreaker` implements a circuit breaker using `genserver` as the state machine. A circuit breaker stops cascading failures by fast-failing requests when a downstream dependency is unhealthy.
+
+```bash
+go run github.com/mikehelmick/go-functional/examples/circuitbreaker@latest
+```
+
+### State machine
+
+```
+Closed ──(threshold failures)──▶ Open ──(timeout elapsed)──▶ HalfOpen
+  ▲                                                               │
+  └──────────────────(success)────────────────────────────────── ┘
+                     (failure returns to Open)
+```
+
+| Mode | Behaviour |
+|---|---|
+| **Closed** | Normal operation — all requests pass through |
+| **Open** | Tripped — requests are rejected immediately (fast-fail) |
+| **HalfOpen** | Probing — one test request is allowed; success closes, failure reopens |
+
+### Why genserver fits perfectly
+
+The circuit breaker's state must be mutated atomically: reading the current mode and transitioning it must happen as a single unit. `genserver` provides this guarantee for free — `HandleCall` and `HandleCast` run serially in a single goroutine, so no mutex is needed.
+
+- **`Call(opAllow)`** — synchronous gate check; reads the mode and may transition `Open → HalfOpen`
+- **`Cast(opSuccess)` / `Cast(opFailure)`** — async outcome reports; update the failure counter and drive state transitions
+
+### Implementation
+
+```go
+type cbServer struct{ cfg Config }
+
+func (cbServer) HandleCall(req cbOp, st cbState) (bool, cbState) {
+    switch st.mode {
+    case Closed:
+        return true, st
+    case Open:
+        if time.Since(st.openedAt) >= st.cfg.Timeout {
+            st.mode = HalfOpen   // transition on first probe attempt
+            return true, st
+        }
+        return false, st
+    case HalfOpen:
+        return true, st
+    }
+    return false, st
+}
+
+func (cbServer) HandleCast(req cbOp, st cbState) cbState {
+    switch req {
+    case opSuccess:
+        if st.mode == HalfOpen {
+            st.mode, st.failures = Closed, 0
+        }
+    case opFailure:
+        st.failures++
+        if st.mode == HalfOpen || (st.mode == Closed && st.failures >= st.cfg.Threshold) {
+            st.mode, st.openedAt = Open, time.Now()
+        }
+    }
+    return st
+}
+```
+
+The public `Do` method wraps the genserver calls into a clean API:
+
+```go
+func (cb *CircuitBreaker) Do(fn func() error) error {
+    if !cb.srv.Call(opAllow) {
+        return ErrOpen
+    }
+    if err := fn(); err != nil {
+        cb.srv.Cast(opFailure)
+        return err
+    }
+    cb.srv.Cast(opSuccess)
+    return nil
+}
+```
+
+### Sample output
+
+```
+Phase 1 — normal operation (circuit closed)
+  request                      ✓ ok
+
+Phase 2 — three consecutive failures trip the breaker
+  request 1                    ✗ failed: service unavailable
+  request 2                    ✗ failed: service unavailable
+  request 3                    ✗ failed: service unavailable
+
+Phase 3 — circuit open, requests are rejected immediately
+  request 1                    ✗ rejected (circuit open)
+  request 2                    ✗ rejected (circuit open)
+  request 3                    ✗ rejected (circuit open)
+
+Phase 4 — waiting 200ms for recovery timeout...
+
+Phase 5 — half-open: probe succeeds, circuit closes
+  probe                        ✓ ok
+
+Phase 6 — normal operation resumed
+  request 1                    ✓ ok
+  request 2                    ✓ ok
+  request 3                    ✓ ok
 ```
