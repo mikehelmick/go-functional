@@ -16,6 +16,7 @@ package slice_test
 
 import (
 	"fmt"
+	"math"
 	"strings"
 	"testing"
 
@@ -84,6 +85,13 @@ func TestTake(t *testing.T) {
 			name: "negative_over",
 			in:   []int{1, 2, 3},
 			amt:  -4,
+			want: []int{1, 2, 3},
+		},
+		{
+			// math.MinInt * -1 overflows back to math.MinInt; ensure no panic.
+			name: "min_int_overflow",
+			in:   []int{1, 2, 3},
+			amt:  math.MinInt,
 			want: []int{1, 2, 3},
 		},
 	}

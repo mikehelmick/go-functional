@@ -28,7 +28,9 @@ func Take[T any](in []T, amount int) []T {
 		return in[0:amount]
 	}
 	// negative amount, take from the end.
-	if amount*-1 >= len(in) {
+	// Use <= instead of amount*-1 to avoid signed integer overflow when
+	// amount == math.MinInt.
+	if amount <= -len(in) {
 		return in
 	}
 	return in[len(in)+amount:]
